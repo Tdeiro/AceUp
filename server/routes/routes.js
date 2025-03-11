@@ -14,6 +14,7 @@ const {
 const {
   getAllTournaments,
   createTournament,
+  deleteTournament,
 } = require("../src/controllers/tournamentController");
 const {
   getUserGames,
@@ -24,7 +25,11 @@ const {
   getUserNotifications,
 } = require("../src/controllers/notificationController");
 
-const { authMiddleware } = require("../src/middleware/authMiddleware");
+const {
+  authMiddleware,
+  isAdmin,
+  isRole,
+} = require("../src/middleware/authMiddleware");
 
 // ✅ Debugging: Ensure routes are being set up
 console.log("✅ Setting up routes in routes.js...");
@@ -42,7 +47,19 @@ router.post("/users", createUser);
 
 // ✅ Tournament Routes
 router.get("/tournaments", getAllTournaments);
-router.post("/tournaments", createTournament);
+router.post(
+  "/tournaments",
+  authMiddleware,
+  isRole("organizer", "admin"),
+  createTournament
+);
+
+router.delete(
+  "/tournaments/:id",
+  authMiddleware,
+  isRole("organizer", "admin"),
+  deleteTournament
+);
 
 // ✅ Game Routes
 router.get("/games", getUserGames);

@@ -1,8 +1,10 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+// ✅ Ensure the request has a valid JWT token
 exports.authMiddleware = (req, res, next) => {
   const token = req.header("Authorization");
+
   if (!token)
     return res
       .status(401)
@@ -20,8 +22,21 @@ exports.authMiddleware = (req, res, next) => {
   }
 };
 
+// ✅ Allow only admins to access certain routes
 exports.isAdmin = (req, res, next) => {
   if (req.user.role !== "admin")
     return res.status(403).json({ message: "Access denied. Admins only." });
   next();
 };
+
+// ✅ Allow only specific roles to access routes
+exports.isRole =
+  (...roles) =>
+  (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({
+        message: `Access denied. Requires one of: ${roles.join(", ")}`,
+      });
+    }
+    next();
+  };
