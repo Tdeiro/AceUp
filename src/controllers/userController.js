@@ -1,30 +1,75 @@
-const User = require("../models/user");
+const { User, Tournament, Game, Notification, Ranking } = require("../models");
 
-// GET all users
-exports.getAllUsers = async (req, res) => {
+// exports.getAllUsers = async (req, res) => {
+//   try {
+//     const users = await User.findAll();
+//     res.json(users);
+//   } catch (error) {
+//     res.status(500).json({ message: "Error retrieving users", error });
+//   }
+// };
+
+exports.getUserById = async (req, res) => {
   try {
-    const users = await User.findAll();
-    res.json(users);
+    const user = await User.findByPk(req.params.id, {
+      include: [
+        {
+          model: Tournament,
+          as: "Tournaments", // ✅ Match alias from models/index.js
+          attributes: ["id", "name", "start_date", "location", "status"],
+        },
+        {
+          model: Game,
+          as: "GamesAsPlayer1", // ✅ Match alias from models/index.js
+          attributes: ["id", "tournament_id", "player_2_id", "score", "status"],
+          include: [
+            {
+              model: User,
+              as: "Player2",
+              attributes: ["id", "name", "username"],
+            },
+          ],
+        },
+        {
+          model: Game,
+          as: "GamesAsPlayer2", // ✅ Match alias from models/index.js
+          attributes: ["id", "tournament_id", "player_1_id", "score", "status"],
+          include: [
+            {
+              model: User,
+              as: "Player1",
+              attributes: ["id", "name", "username"],
+            },
+          ],
+        },
+        {
+          model: Notification,
+          as: "Notifications", // ✅ Match alias from models/index.js
+          attributes: ["id", "message", "read", "created_at"],
+        },
+        {
+          model: Ranking,
+          as: "Ranking", // ✅ Match alias from models/index.js
+          attributes: ["points", "last_updated"],
+        },
+      ],
+    });
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.json(user);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error retrieving user", error: error.message });
   }
 };
 
-// Register User
-exports.registerUser = async (req, res) => {
+exports.createUser = async (req, res) => {
   try {
-    const { name, email, password, skill_level, city } = req.body;
-
-    const user = await User.create({
-      name,
-      email,
-      password_hash: password,
-      skill_level,
-      city,
-    });
-
-    res.status(201).json({ message: "User created successfully!", user });
+    const user = await User.create(req.body);
+    res.status(201).json(user);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: "Error creating user", error });
   }
 };
