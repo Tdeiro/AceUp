@@ -24,6 +24,7 @@ const { getAllRankings } = require("../src/controllers/rankingController");
 const {
   getUserNotifications,
 } = require("../src/controllers/notificationController");
+const cors = require("cors");
 
 const {
   authMiddleware,
@@ -34,6 +35,14 @@ const {
 // ✅ Debugging: Ensure routes are being set up
 console.log("✅ Setting up routes in routes.js...");
 
+router.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 // ✅ Public Auth Routes
 router.post("/auth/register", register);
 router.post("/auth/login", login);

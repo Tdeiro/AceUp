@@ -1,51 +1,114 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+const validSkillLevels = ["beginner", "intermediate", "advanced"]; // ✅ Define allowed skill levels
+
+const signupSchema = yup.object().shape({
+  name: yup.string().required("Full name is required"),
+  username: yup.string().required("Username is required"),
+  email: yup.string().email("Invalid email").required("Email is required"),
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .matches(/[A-Z]/, "Must contain at least one uppercase letter")
+    .matches(/[0-9]/, "Must contain at least one number")
+    .required("Password is required"),
+  skill_level: yup
+    .string()
+    .oneOf(validSkillLevels, "Invalid skill level selected") // ✅ Restrict to valid values
+    .required("Skill level is required"),
+});
+
 export default function SignUp() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSignUp = (e) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: yupResolver(signupSchema),
+  });
 
-    // TODO: Add authentication logic here
-    console.log("Signing up with:", { name, email, password });
+  const handleSignUp = async (data: unknown) => {
+    setErrorMessage("");
 
-    // Redirect to dashboard after sign-up (Replace with actual auth logic)
-    navigate("/dashboard");
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message);
+      }
+
+      // Save JWT Token in local storage
+      localStorage.setItem("token", result.token);
+
+      // Redirect to Dashboard
+      navigate("/dashboard");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      setErrorMessage(error.message);
+    }
   };
 
   return (
     <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-semibold text-center mb-4">Sign Up</h2>
-      <form onSubmit={handleSignUp} className="space-y-4">
-        <Input
-          type="text"
-          placeholder="Full Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <Input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <Input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <Button type="submit" className="w-full">
-          Sign Up
+      {errorMessage && (
+        <p className="text-red-500 text-sm text-center">{errorMessage}</p>
+      )}
+      <form onSubmit={handleSubmit(handleSignUp)} className="space-y-4">
+        <div>
+          <Input type="text" placeholder="Full Name" {...register("name")} />
+          <p className="text-red-500 text-xs">{errors.name?.message}</p>
+        </div>
+        <div>
+          <Input type="text" placeholder="Username" {...register("username")} />
+          <p className="text-red-500 text-xs">{errors.username?.message}</p>
+        </div>
+        <div>
+          <Input type="email" placeholder="Email" {...register("email")} />
+          <p className="text-red-500 text-xs">{errors.email?.message}</p>
+        </div>
+        <div>
+          <Input
+            type="password"
+            placeholder="Password"
+            {...register("password")}
+          />
+          <p className="text-red-500 text-xs">{errors.password?.message}</p>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Skill Level
+          </label>
+          <select
+            {...register("skill_level")}
+            className="w-full border border-gray-300 p-2 rounded-md"
+          >
+            <option value="">Select a skill level</option>
+            {validSkillLevels.map((level) => (
+              <option key={level} value={level}>
+                {level.charAt(0).toUpperCase() + level.slice(1)}
+              </option>
+            ))}
+          </select>
+          <p className="text-red-500 text-xs">{errors.skill_level?.message}</p>
+        </div>
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? "Signing Up..." : "Sign Up"}
         </Button>
       </form>
       <p className="text-center mt-4 text-sm">
