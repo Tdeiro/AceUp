@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import AuthContext from "@/context/AuthContext";
 
 const validSkillLevels = ["beginner", "intermediate", "advanced"]; // ✅ Define allowed skill levels
 
@@ -36,6 +37,8 @@ export default function SignUp() {
     resolver: yupResolver(signupSchema),
   });
 
+  const { setUser } = useContext(AuthContext);
+
   const handleSignUp = async (data: unknown) => {
     setErrorMessage("");
 
@@ -52,12 +55,14 @@ export default function SignUp() {
         throw new Error(result.message);
       }
 
-      // Save JWT Token in local storage
+      // ✅ Save token to localStorage
       localStorage.setItem("token", result.token);
 
-      // Redirect to Dashboard
+      // ✅ Immediately update AuthContext user state
+      setUser(result.user); // 🚀 Updates user state before navigation
+
+      // ✅ Ensure navigation happens AFTER setting the token and user state
       navigate("/dashboard");
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setErrorMessage(error.message);
     }
