@@ -20,12 +20,12 @@ exports.getUserById = async (req, res) => {
       include: [
         {
           model: Tournament,
-          as: "Tournaments", // ✅ Match alias from models/index.js
+          as: "Tournaments", 
           attributes: ["id", "name", "start_date", "location", "status"],
         },
         {
           model: Game,
-          as: "GamesAsPlayer1", // ✅ Match alias from models/index.js
+          as: "GamesAsPlayer1", 
           attributes: ["id", "tournament_id", "player_2_id", "score", "status"],
           include: [
             {
@@ -37,7 +37,7 @@ exports.getUserById = async (req, res) => {
         },
         {
           model: Game,
-          as: "GamesAsPlayer2", // ✅ Match alias from models/index.js
+          as: "GamesAsPlayer2", 
           attributes: ["id", "tournament_id", "player_1_id", "score", "status"],
           include: [
             {
@@ -49,12 +49,12 @@ exports.getUserById = async (req, res) => {
         },
         {
           model: Notification,
-          as: "Notifications", // ✅ Match alias from models/index.js
+          as: "Notifications", 
           attributes: ["id", "message", "read", "created_at"],
         },
         {
           model: Ranking,
-          as: "Ranking", // ✅ Match alias from models/index.js
+          as: "Ranking", 
           attributes: ["points", "last_updated"],
         },
       ],

@@ -9,11 +9,11 @@ const sequelize = new Sequelize(
     host: process.env.DB_HOST,
     dialect: "postgres",
     port: process.env.DB_PORT || 5432,
-    logging: false, // Disable logging for a cleaner console
+    logging: false, 
   }
 );
 
-// Function to check database connection
+
 const connectDB = async () => {
   try {
     await sequelize.authenticate();

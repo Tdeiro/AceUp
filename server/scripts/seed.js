@@ -13,8 +13,8 @@ const seedDatabase = async () => {
     await sequelize.authenticate();
     console.log("✅ Database connected!");
 
-    // Sync database
-    await sequelize.sync({ force: true }); // ⚠️ WARNING: This will reset all data!
+    
+    await sequelize.sync({ force: true }); 
 
     // -------------------- SEED USERS --------------------
     const users = [];

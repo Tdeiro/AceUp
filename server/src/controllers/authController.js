@@ -51,7 +51,7 @@ const login = async (req, res) => {
 
     console.log("🔵 Login attempt with email:", email);
 
-    // ✅ Ensure email is compared in lowercase
+    
     const user = await User.findOne({
       where: { email: email.trim().toLowerCase() },
     });
@@ -63,7 +63,7 @@ const login = async (req, res) => {
 
     console.log("🟢 User found:", user.email, "Role:", user.role);
 
-    // ✅ Debugging: Check if bcrypt.compare is failing
+   
     const isMatch = await bcrypt.compare(password, user.password_hash);
 
     if (!isMatch) {

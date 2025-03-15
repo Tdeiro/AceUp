@@ -20,7 +20,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="w-full bg-gradient-to-r from-blue-900 to-indigo-700 text-white shadow-md">
+    <nav className="w-full bg-gradient-to-r from-blue-900 to-indigo-700 text-white shadow-md fixed top-0 left-0 z-50">
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
         {/* Logo */}
         <Link
