@@ -1,14 +1,19 @@
 const { User, Tournament, Game, Notification, Ranking } = require("../models");
 
-// exports.getAllUsers = async (req, res) => {
-//   try {
-//     const users = await User.findAll();
-//     res.json(users);
-//   } catch (error) {
-//     res.status(500).json({ message: "Error retrieving users", error });
-//   }
-// };
-
+exports.getAllUsers = async (req, res) => {
+  try {
+    console.log("🟢 Fetching all users...");
+    const users = await User.findAll({
+      attributes: ["id", "name", "username", "email", "role", "skill_level"],
+    });
+    res.json(users);
+  } catch (error) {
+    console.error("❌ Error fetching users:", error);
+    res
+      .status(500)
+      .json({ message: "Error fetching users", error: error.message });
+  }
+};
 exports.getUserById = async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id, {

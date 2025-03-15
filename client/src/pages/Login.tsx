@@ -1,21 +1,45 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import AuthContext from "@/context/AuthContext";
+import axiosInstance from "@/api/axiosInstance";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
 
-    // TODO: Add authentication logic here
-    console.log("Logging in with:", email, password);
+    try {
+      console.log("🔵 Logging in...");
+      const response = await axiosInstance.post("/auth/login", {
+        email,
+        password,
+      });
 
-    // Redirect to dashboard after login (replace with actual auth logic)
-    navigate("/dashboard");
+      console.log("🟢 Login successful:", response.data);
+
+      // ✅ Store token
+      localStorage.setItem("token", response.data.token);
+      setUser(response.data.user); // ✅ Update context
+
+      // ✅ Redirect user based on role
+      if (response.data.user.role === "admin") {
+        navigate("/users/all");
+      } else {
+        navigate("/dashboard");
+      }
+    } catch (error: any) {
+      console.error("🔴 Login error:", error.response?.data || error);
+      setError(error.response?.data?.message || "Failed to log in.");
+    }
   };
 
   return (

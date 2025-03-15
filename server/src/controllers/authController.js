@@ -49,19 +49,37 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ where: { email } });
+    console.log("🔵 Login attempt with email:", email);
+
+    // ✅ Ensure email is compared in lowercase
+    const user = await User.findOne({
+      where: { email: email.trim().toLowerCase() },
+    });
+
     if (!user) {
+      console.log("🔴 No user found with this email.");
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password_hash); // ✅ Use `password_hash`
+    console.log("🟢 User found:", user.email, "Role:", user.role);
+
+    // ✅ Debugging: Check if bcrypt.compare is failing
+    const isMatch = await bcrypt.compare(password, user.password_hash);
+
     if (!isMatch) {
+      console.log("🔴 Bcrypt comparison failed! Password is incorrect.");
+      console.log("🔵 Entered password:", password);
+      console.log("🔵 Stored hash:", user.password_hash);
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
+    console.log("🟢 Password matched. Generating token...");
+
+    // ✅ Generate JWT token
     const token = generateToken(user);
     res.json({ token, user });
   } catch (error) {
+    console.error("🔴 Login error:", error);
     res.status(500).json({ message: "Error logging in", error: error.message });
   }
 };

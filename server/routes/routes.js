@@ -10,6 +10,7 @@ const {
 const {
   getUserById,
   createUser,
+  getAllUsers,
 } = require("../src/controllers/userController");
 const {
   getAllTournaments,
@@ -53,6 +54,7 @@ router.get("/auth/profile", authMiddleware, getProfile);
 // ✅ User Routes
 router.get("/users/:id", getUserById);
 router.post("/users", createUser);
+router.get("/user/all", authMiddleware, isAdmin, getAllUsers);
 
 // ✅ Tournament Routes
 router.get("/tournaments", getAllTournaments);
