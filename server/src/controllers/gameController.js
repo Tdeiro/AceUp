@@ -1,6 +1,6 @@
 const { Game } = require("../models");
 
-// ✅ Users can only retrieve their own games
+
 exports.getUserGames = async (req, res) => {
   try {
     const games = await Game.findAll({

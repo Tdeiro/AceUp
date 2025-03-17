@@ -18,21 +18,21 @@ exports.createTournament = async (req, res) => {
   }
 };
 
-// ✅ Allow admins or tournament organizers to delete
+
 exports.deleteTournament = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
     const userRole = req.user.role;
 
-    // ✅ Find tournament
+    
     const tournament = await Tournament.findByPk(id);
 
     if (!tournament) {
       return res.status(404).json({ message: "Tournament not found" });
     }
 
-    // ✅ Allow if user is an admin OR if user is the organizer of the tournament
+    
     if (userRole === "admin" || tournament.organizerId === userId) {
       await tournament.destroy();
       return res.json({ message: "Tournament deleted successfully!" });

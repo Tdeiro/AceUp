@@ -75,7 +75,7 @@ const login = async (req, res) => {
 
     console.log("🟢 Password matched. Generating token...");
 
-    // ✅ Generate JWT token
+    
     const token = generateToken(user);
     res.json({ token, user });
   } catch (error) {
