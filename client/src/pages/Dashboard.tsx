@@ -2,15 +2,16 @@ import { useEffect, useState, useContext } from "react";
 import axiosInstance from "@/api/axiosInstance";
 import AuthContext from "@/context/AuthContext";
 // import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { User } from "@/shared/Types";
 import { ValidationError } from "yup";
 import axios from "axios";
 
 
 
+
 export default function UserDashboard() {
-  const { user, logout } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   // const navigate = useNavigate();
   const [profile, setProfile] = useState<User | null>(null); 
 
@@ -73,9 +74,9 @@ export default function UserDashboard() {
         <p className="text-gray-500">Loading profile...</p>
       )}
 
-      <Button className="mt-4 bg-gray-600 hover:bg-gray-800" onClick={logout}>
+      {/* <Button className="mt-4 bg-gray-600 hover:bg-gray-800" onClick={logout}>
         Logout
-      </Button>
+      </Button> */}
     </div>
   );
 }

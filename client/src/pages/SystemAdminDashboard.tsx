@@ -9,7 +9,7 @@ import axios from "axios";
 
 
 export default function SystemAdminDashboard() {
-  const { user, logout } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [users, setUsers] = useState<User[]>([]); 
 
@@ -98,9 +98,9 @@ export default function SystemAdminDashboard() {
           ))}
         </tbody>
       </table>
-      <Button className="mt-4 bg-gray-600 hover:bg-gray-800" onClick={logout}>
+      {/* <Button className="mt-4 bg-gray-600 hover:bg-gray-800" onClick={logout}>
         Logout
-      </Button>
+      </Button> */}
     </div>
   );
 }

@@ -7,12 +7,12 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
+// import {
+//   DropdownMenu,
+//   DropdownMenuTrigger,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+// } from "@/components/ui/dropdown-menu";
 import AuthContext from "@/context/AuthContext";
 import { ADMIN } from "@/shared/Constants";
 
@@ -75,31 +75,20 @@ export default function Navbar() {
 
         
         <div className="hidden md:flex items-center">
-          {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="text-white border-white hover:bg-indigo-800"
-                >
-                  {user.name} ⬇
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-gray-900 text-white border border-gray-700 rounded-lg">
-                <DropdownMenuItem
-                  onClick={logout}
-                  className="hover:bg-gray-800 px-4 py-2 rounded"
-                >
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <Link to="/login">
-              <Button className="bg-green-500 hover:bg-green-600">Login</Button>
-            </Link>
-          )}
-        </div>
+      {user ? (
+      <Button
+        onClick={logout}
+        variant="outline"
+        className="text-indigo-800 border-white hover:bg-indigo-800 hover:text-white"
+      >
+        Logout
+      </Button>
+    ) : (
+      <Link to="/login">
+        <Button className="bg-green-500 hover:bg-green-600">Login</Button>
+      </Link>
+    )}
+      </div>
 
         
         <Button
