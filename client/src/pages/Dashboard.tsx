@@ -3,16 +3,9 @@ import axiosInstance from "@/api/axiosInstance";
 import AuthContext from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { User } from "@/shared/Types";
 
-// ✅ Define the User interface
-interface User {
-  id: string;
-  name: string;
-  username: string;
-  email: string;
-  role: string;
-  skill_level: string;
-}
+
 
 export default function UserDashboard() {
   const { user, logout } = useContext(AuthContext);
@@ -48,7 +41,7 @@ export default function UserDashboard() {
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">User Dashboard</h2>
 
-      {/* ✅ Display User Profile Info */}
+      
       {profile ? (
         <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-4">
           <h3 className="text-lg font-semibold">Welcome, {profile.name}!</h3>

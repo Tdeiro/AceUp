@@ -22,7 +22,7 @@ export default function Navbar() {
   return (
     <nav className="w-full bg-gradient-to-r from-blue-900 to-indigo-700 text-white shadow-md fixed top-0 left-0 z-50">
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
-        {/* Logo */}
+        
         <Link
           to="/"
           className="text-3xl font-bold tracking-wide hover:opacity-80 transition"
@@ -30,16 +30,9 @@ export default function Navbar() {
           🏆 AceUp
         </Link>
 
-        {/* Navigation Menu for Desktop */}
+        
         <NavigationMenu className="hidden md:flex space-x-6">
           <NavigationMenuList>
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <Link to="/" className="hover:text-gray-300 transition">
-                  Home
-                </Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
             {user && (
               <>
                 <NavigationMenuItem>
@@ -79,7 +72,7 @@ export default function Navbar() {
           </NavigationMenuList>
         </NavigationMenu>
 
-        {/* User Menu / Authentication */}
+        
         <div className="hidden md:flex items-center">
           {user ? (
             <DropdownMenu>
@@ -107,7 +100,7 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Mobile Menu Toggle */}
+        
         <Button
           variant="ghost"
           className="md:hidden focus:outline-none text-white"
@@ -117,7 +110,7 @@ export default function Navbar() {
         </Button>
       </div>
 
-      {/* Mobile Menu */}
+      
       {isOpen && (
         <div className="md:hidden bg-indigo-800 p-4 space-y-3">
           <Link

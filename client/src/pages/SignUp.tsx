@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import AuthContext from "@/context/AuthContext";
 
-const validSkillLevels = ["beginner", "intermediate", "advanced"]; // ✅ Define allowed skill levels
+const validSkillLevels = ["beginner", "intermediate", "advanced"];
 
 const signupSchema = yup.object().shape({
   name: yup.string().required("Full name is required"),
@@ -21,7 +21,7 @@ const signupSchema = yup.object().shape({
     .required("Password is required"),
   skill_level: yup
     .string()
-    .oneOf(validSkillLevels, "Invalid skill level selected") // ✅ Restrict to valid values
+    .oneOf(validSkillLevels, "Invalid skill level selected") 
     .required("Skill level is required"),
 });
 

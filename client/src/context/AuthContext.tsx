@@ -12,14 +12,14 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
-  setUser: (user: User | null) => void; // ✅ Add setUser function
+  setUser: (user: User | null) => void; 
   loading: boolean;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  setUser: () => {}, // ✅ Add empty function as default value
+  setUser: () => {},
   loading: true,
   logout: () => {},
 });
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           return;
         }
 
-        // ✅ Fetch user info
+        
         const response = await axiosInstance.get("/auth/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });

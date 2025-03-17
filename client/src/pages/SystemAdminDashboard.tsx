@@ -3,33 +3,25 @@ import axiosInstance from "@/api/axiosInstance";
 import AuthContext from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { User } from "@/shared/Types";
 
-// ✅ Define the User interface
-interface User {
-  id: string;
-  name: string;
-  username: string;
-  email: string;
-  role: string;
-  skill_level: string;
-}
 
 export default function SystemAdminDashboard() {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [users, setUsers] = useState<User[]>([]); // ✅ Ensure state type is User[]
+  const [users, setUsers] = useState<User[]>([]); 
 
   useEffect(() => {
     if (!user) return undefined;
 
     if (user?.role !== "admin") {
-      navigate("/dashboard"); // 🚨 Redirect non-admins
+      navigate("/dashboard"); 
     }
     const fetchUsers = async () => {
       try {
         console.log("🔵 Fetching users...");
         console.log(localStorage.getItem("token"));
-        // ✅ Explicitly type Axios response
+        
         const response = await axiosInstance.get<User[]>("/user/all", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -103,7 +95,7 @@ export default function SystemAdminDashboard() {
   );
 }
 
-// ✅ Delete User
+
 const handleDelete = async (userId: string) => {
   if (!window.confirm("Are you sure you want to delete this user?")) return;
 

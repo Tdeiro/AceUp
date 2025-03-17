@@ -26,11 +26,11 @@ export default function Login() {
 
       console.log("🟢 Login successful:", response.data);
 
-      // ✅ Store token
+      
       localStorage.setItem("token", response.data.token);
-      setUser(response.data.user); // ✅ Update context
+      setUser(response.data.user); 
 
-      // ✅ Redirect user based on role
+      
       if (response.data.user.role === "admin") {
         navigate("/users/all");
       } else {
@@ -40,6 +40,8 @@ export default function Login() {
       console.error("🔴 Login error:", error.response?.data || error);
       setError(error.response?.data?.message || "Failed to log in.");
     }
+
+    
   };
 
   return (
