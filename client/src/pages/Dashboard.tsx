@@ -1,16 +1,18 @@
 import { useEffect, useState, useContext } from "react";
 import axiosInstance from "@/api/axiosInstance";
 import AuthContext from "@/context/AuthContext";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { User } from "@/shared/Types";
+import { ValidationError } from "yup";
+import axios from "axios";
 
 
 
 export default function UserDashboard() {
   const { user, logout } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const [profile, setProfile] = useState<User | null>(null); // ✅ Store logged-in user info
+  // const navigate = useNavigate();
+  const [profile, setProfile] = useState<User | null>(null); 
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -22,16 +24,25 @@ export default function UserDashboard() {
 
         console.log("🟢 User profile fetched:", response.data);
         setProfile(response.data);
-      } catch (error: any) {
-        console.error(
-          "🔴 Error fetching profile:",
-          error.response?.data || error
-        );
-        alert(
-          "Failed to fetch profile: " +
-            (error.response?.data?.message || error.message)
-        );
+      } catch (error: unknown) {
+        if (!(error instanceof ValidationError)) {
+          throw error; 
+        }
+      
+        console.error("🔴 Validation Error:", error);
+      
+        if (axios.isAxiosError(error)) {
+          alert(
+            "Failed to fetch profile: " +
+              (error.response?.data?.message || error.message)
+          );
+        } else if (error instanceof Error) {
+          alert("Failed to fetch profile: " + error.message);
+        } else {
+          alert("An unknown error occurred.");
+        }
       }
+        
     };
 
     fetchProfile();
@@ -40,11 +51,11 @@ export default function UserDashboard() {
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">User Dashboard</h2>
-
+      {user && <h3 className="text-lg font-semibold">Welcome, {user.name}!</h3>}
       
       {profile ? (
         <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-4">
-          <h3 className="text-lg font-semibold">Welcome, {profile.name}!</h3>
+          
           <p>
             <strong>Username:</strong> {profile.username}
           </p>
