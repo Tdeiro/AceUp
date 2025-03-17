@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import AuthContext from "@/context/AuthContext";
+import axios from "axios";
 
 const validSkillLevels = ["beginner", "intermediate", "advanced"];
 
@@ -63,8 +64,11 @@ export default function SignUp() {
 
       // ✅ Ensure navigation happens AFTER setting the token and user state
       navigate("/dashboard");
-    } catch (error: any) {
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)){
       setErrorMessage(error.message);
+      }
+      
     }
   };
 
