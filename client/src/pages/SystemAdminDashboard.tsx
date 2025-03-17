@@ -4,6 +4,8 @@ import AuthContext from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { User } from "@/shared/Types";
+import { ValidationError } from "yup";
+import axios from "axios";
 
 
 export default function SystemAdminDashboard() {
@@ -30,15 +32,23 @@ export default function SystemAdminDashboard() {
 
         console.log("🟢 Users fetched:", response.data);
         setUsers(response.data);
-      } catch (error: any) {
-        console.error(
-          "🔴 Error fetching users:",
-          error.response?.data || error
-        );
-        alert(
-          "Failed to fetch users: " +
-            (error.response?.data?.message || error.message)
-        );
+      } catch (error: unknown) {
+        if (!(error instanceof ValidationError)) {
+          throw error; 
+        }
+      
+        console.error("🔴 Validation Error:", error);
+      
+        if (axios.isAxiosError(error)) {
+          alert(
+            "Failed to fetch users: " +
+              (error.response?.data?.message || error.message)
+          );
+        } else if (error instanceof Error) {
+          alert("Failed to fetch users: " + error.message);
+        } else {
+          alert("An unknown error occurred.");
+        }
       }
     };
 
