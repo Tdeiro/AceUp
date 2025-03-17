@@ -9,7 +9,7 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { user, loading } = useContext(AuthContext);
 
-  if (loading) return <p>Loading...</p>; // ✅ Prevents flashing of login screen
+  if (loading) return <p>Loading...</p>; 
 
   return user ? <>{children}</> : <Navigate to="/" replace />;
 }

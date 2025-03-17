@@ -1,14 +1,7 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "@/api/axiosInstance";
-
-interface User {
-  id: string;
-  name: string;
-  username: string;
-  email: string;
-  role: string;
-}
+import { User } from "@/shared/Types";
 
 interface AuthContextType {
   user: User | null;

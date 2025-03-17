@@ -14,6 +14,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import AuthContext from "@/context/AuthContext";
+import { ADMIN } from "@/shared/Constants";
 
 export default function Navbar() {
   const { user, logout } = useContext(AuthContext);
@@ -55,7 +56,7 @@ export default function Navbar() {
                     </Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
-                {user.role === "admin" && (
+                {user.role === ADMIN && (
                   <NavigationMenuItem>
                     <NavigationMenuLink asChild>
                       <Link
@@ -133,7 +134,7 @@ export default function Navbar() {
               >
                 Tournaments
               </Link>
-              {user.role === "admin" && (
+              {user.role === ADMIN && (
                 <Link
                   to="/users/all"
                   className="block hover:text-gray-300 transition"
