@@ -16,12 +16,13 @@ import {
 import AuthContext from "@/context/AuthContext";
 import { ADMIN } from "@/shared/Constants";
 
-export default function Navbar() {
+export default function Navbar({disableLogin = false}) {
   const { user, logout } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="w-full bg-gradient-to-r from-blue-900 to-indigo-700 text-white shadow-md fixed top-0 left-0 z-50">
+    <nav className="w-full bg-gradient-to-r from-black to-gray-900 text-white shadow-md fixed top-0 left-0 z-50">
+
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
         
         <Link
@@ -83,12 +84,17 @@ export default function Navbar() {
       >
         Logout
       </Button>
-    ) : (
-      <Link to="/login">
-        <Button className="bg-green-500 hover:bg-green-600">Login</Button>
-      </Link>
-    )}
-      </div>
+      ) : disableLogin ? (
+        <span className="text-white text-xl font-bold">Connecting Players. Uniting the game.</span>
+        // <span className="text-white text-xl font-bold">Play. Connect. Compete.</span>
+
+
+      ) : (
+        <Link to="/login">
+          <Button className="bg-green-500 hover:bg-green-600">Login</Button>
+        </Link>
+      )}
+    </div>
 
         
         <Button
@@ -139,10 +145,14 @@ export default function Navbar() {
               </button>
             </>
           )}
-          {!user && (
-            <Link to="/login" className="block hover:text-gray-300 transition">
-              Login
-            </Link>
+           {!user && (
+            disableLogin ? (
+              <span className="block text-gray-300">Login is disabled</span>
+            ) : (
+              <Link to="/login" className="block hover:text-gray-300 transition">
+                Login
+              </Link>
+            )
           )}
         </div>
       )}

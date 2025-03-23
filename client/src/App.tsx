@@ -13,6 +13,7 @@ function App() {
   const { user, loading } = useContext(AuthContext);
   return (
     <div className="flex flex-col items-center justify-center min-h-svh">
+      <Navbar disableLogin={true}/>
       {loading}
       {user && <Navbar />}
       <Routes>

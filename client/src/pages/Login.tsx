@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import AuthContext from "@/context/AuthContext";
 import axiosInstance from "@/api/axiosInstance";
 import axios from "axios";
+import Logo from "./Logo";
 
 export default function Login() {
   const { setUser } = useContext(AuthContext);
@@ -55,6 +56,7 @@ export default function Login() {
 
   return (
     <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+      <Logo/>
       <h2 className="text-2xl font-semibold text-center mb-4">Login</h2>
       <form onSubmit={handleLogin} className="space-y-4">
 

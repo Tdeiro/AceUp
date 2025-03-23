@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import AuthContext from "@/context/AuthContext";
 import axios from "axios";
+import Logo from "./Logo";
 
 const validSkillLevels = ["beginner", "intermediate", "advanced"];
 
@@ -74,6 +75,7 @@ export default function SignUp() {
 
   return (
     <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+      <Logo/>
       <h2 className="text-2xl font-semibold text-center mb-4">Sign Up</h2>
       {errorMessage && (
         <p className="text-red-500 text-sm text-center">{errorMessage}</p>
