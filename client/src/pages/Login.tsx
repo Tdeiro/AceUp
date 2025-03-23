@@ -76,6 +76,15 @@ export default function Login() {
         <Button type="submit" className="w-full">
           Sign In
         </Button>
+        <p className="text-center mt-4 text-sm">
+        Not yet a member?{" "}
+        <span
+          className="text-blue-500 cursor-pointer"
+          onClick={() => navigate("/register")}
+        >
+          Subscribe now
+        </span>
+        </p>
       </form>
     </div>
   );
