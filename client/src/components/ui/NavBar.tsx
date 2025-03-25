@@ -29,7 +29,7 @@ export default function Navbar({disableLogin = false}) {
           to="/"
           className="text-3xl font-bold tracking-wide hover:opacity-80 transition"
         >
-          🏆 AceUp
+         AceUp
         </Link>
 
         

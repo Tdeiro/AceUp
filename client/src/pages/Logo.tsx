@@ -1,4 +1,4 @@
-import logo from '../assets/default-monochrome.svg';
+import logo from '../assets/default.png';
 
 export default function Logo() {
     return (
@@ -9,7 +9,7 @@ export default function Logo() {
                 width: "25rem",
                 height: "25rem",
                 objectFit: "contain",
-                marginTop: "-14rem", 
+                marginTop: "-12rem", 
             }}
         />
     );
