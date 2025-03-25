@@ -9,7 +9,7 @@ import AuthContext from "@/context/AuthContext";
 import axios from "axios";
 import Logo from "./Logo";
 
-const validSkillLevels = ["beginner", "intermediate", "advanced"];
+// const validSkillLevels = ["beginner", "intermediate", "advanced"];
 
 const signupSchema = yup.object().shape({
   name: yup.string().required("Full name is required"),
@@ -21,10 +21,10 @@ const signupSchema = yup.object().shape({
     .matches(/[A-Z]/, "Must contain at least one uppercase letter")
     .matches(/[0-9]/, "Must contain at least one number")
     .required("Password is required"),
-  skill_level: yup
-    .string()
-    .oneOf(validSkillLevels, "Invalid skill level selected") 
-    .required("Skill level is required"),
+  // skill_level: yup
+  //   .string()
+  //   .oneOf(validSkillLevels, "Invalid skill level selected") 
+  //   .required("Skill level is required"),
 });
 
 export default function SignUp() {
@@ -102,21 +102,21 @@ export default function SignUp() {
           <p className="text-red-500 text-xs">{errors.password?.message}</p>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          {/* <label className="block text-sm font-medium text-gray-700">
             Skill Level
-          </label>
-          <select
+          </label> */}
+          {/* <select
             {...register("skill_level")}
             className="w-full border border-gray-300 p-2 rounded-md"
-          >
-            <option value="">Select a skill level</option>
+          > */}
+            {/* <option value="">Select a skill level</option>
             {validSkillLevels.map((level) => (
               <option key={level} value={level}>
                 {level.charAt(0).toUpperCase() + level.slice(1)}
               </option>
-            ))}
-          </select>
-          <p className="text-red-500 text-xs">{errors.skill_level?.message}</p>
+            ))} */}
+          {/* </select> */}
+          {/* <p className="text-red-500 text-xs">{errors.skill_level?.message}</p> */}
         </div>
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? "Signing Up..." : "Sign Up"}

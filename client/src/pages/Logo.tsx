@@ -9,7 +9,7 @@ export default function Logo() {
                 width: "25rem",
                 height: "25rem",
                 objectFit: "contain",
-                marginTop: "-12rem", 
+                marginTop: "-4rem", 
             }}
         />
     );
