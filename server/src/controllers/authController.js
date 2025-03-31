@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { User } = require("../models");
-const Joi = require("joi");  // ✅ Import Joi for validation
+const Joi = require("joi");  
 require("dotenv").config();
 
 
@@ -11,14 +11,13 @@ const generateToken = (user) => {
   });
 };
 
-
 const registerSchema = Joi.object({
   name: Joi.string().min(3).max(50).required(),
   username: Joi.string().min(3).max(30).required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(8).max(128).required(),
-  skill_level: Joi.string().valid("beginner", "intermediate", "advanced").required(),
-  role: Joi.string().valid("user", "admin").required(),
+  // skill_level: Joi.string().valid("beginner", "intermediate", "advanced").required(),
+  role: Joi.string().valid("player", "admin").required(),
 });
 
 const loginSchema = Joi.object({
@@ -28,14 +27,21 @@ const loginSchema = Joi.object({
 
 const register = async (req, res) => {
   try {
-    
-    const { error, value } = registerSchema.validate(req.body);
-    if (error) return res.status(400).json({ message: error.details[0].message });
+    console.log("🔍 Incoming registration data:", req.body);
 
-    const { name, username, email, password, skill_level, role } = value;
+    const { error, value } = registerSchema.validate(req.body);
+    if (error) {
+      console.log("❌ Validation Error:", error.details);
+      return res.status(400).json({ message: error.details[0].message });
+    }
+
+    const { name, username, email, password } = value;
+    const role = "player"; // 👈 Use "player" as the default role for all new users
 
     const existingUser = await User.findOne({ where: { email } });
-    if (existingUser) return res.status(400).json({ message: "Email already in use" });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already in use" });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -44,8 +50,7 @@ const register = async (req, res) => {
       username,
       email,
       password_hash: hashedPassword,
-      skill_level,
-      role,
+      role, // 👈 Role is now always "player"
     });
 
     const token = generateToken(user);
@@ -55,6 +60,7 @@ const register = async (req, res) => {
     res.status(500).json({ message: "Error registering user", error: error.message });
   }
 };
+
 
 
 const login = async (req, res) => {

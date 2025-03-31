@@ -21,7 +21,8 @@ const User = sequelize.define(
     password_hash: { type: DataTypes.STRING, allowNull: false },
     skill_level: {
       type: DataTypes.ENUM("beginner", "intermediate", "advanced"),
-      allowNull: false,
+      allowNull: true, 
+      defaultValue: "beginner", 
     },
     role: {
       type: DataTypes.ENUM("player", "organizer", "admin"),

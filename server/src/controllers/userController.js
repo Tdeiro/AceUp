@@ -72,9 +72,23 @@ exports.getUserById = async (req, res) => {
 
 exports.createUser = async (req, res) => {
   try {
-    const user = await User.create(req.body);
+    const { name, username, email, password_hash, role, skill_level } = req.body;
+
+    
+    const finalSkillLevel = skill_level || "beginner";  
+
+    const user = await User.create({
+      name,
+      username,
+      email,
+      password_hash,
+      role,
+      skill_level: finalSkillLevel,  
+    });
+
     res.status(201).json(user);
   } catch (error) {
-    res.status(500).json({ message: "Error creating user", error });
+    console.error("❌ Error creating user:", error);
+    res.status(500).json({ message: "Error creating user", error: error.message });
   }
 };
